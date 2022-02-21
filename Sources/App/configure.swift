@@ -1,5 +1,7 @@
 import Fluent
 import FluentMongoDriver
+import QueuesMongoDriver
+import MongoKitten
 import Leaf
 import Vapor
 
@@ -12,8 +14,19 @@ public func configure(_ app: Application) throws {
         connectionString: Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017/vapor_database"
     ), as: .mongo)
 
-    app.migrations.add(CreateTodo())
+    let mongoDatabase = try MongoDatabase.lazyConnect(Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017/vapor_database", on: app.eventLoopGroup.next())
+
+    // Setup Indexes for the Job Schema for performance (Optional)
+    try app.queues.setupMongo(using: mongoDatabase)
+    app.queues.use(.mongodb(mongoDatabase))
+
+    app.queues.schedule(FetchDataJob())
+            .minutely()
+            .at(0)
+
     app.views.use(.leaf)
+
+    try app.queues.startScheduledJobs()
 
     // register routes
     try routes(app)

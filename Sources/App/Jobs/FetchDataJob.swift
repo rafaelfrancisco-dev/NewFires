@@ -37,8 +37,6 @@ struct FetchDataJob: AsyncScheduledJob {
     }
 
     private func storeOnDatabase(events: [ProCivEvent], database: Database) async throws {
-        for item in events {
-            try await item.save(on: database)
-        }
+        try await events.create(on: database)
     }
 }

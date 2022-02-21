@@ -7,3 +7,8 @@ DerivedData/
 db.sqlite
 .swiftpm
 
+/.idea/app.iml
+/.idea/modules.xml
+/.idea/misc.xml
+/.idea/vcs.xml
+/Package.resolved

@@ -15,7 +15,7 @@ class CsvHandler {
     func eventsFromCSV() throws -> [ProCivEvent] {
         var returnArray = [ProCivEvent]()
 
-        try csv.enumerateAsArray(startAt: 0, rowLimit: nil) { array in
+        try csv.enumerateAsArray(startAt: 1, rowLimit: nil) { array in
             returnArray.append(ProCivEvent(
                     numero: array[0],
                     dataOcorrencia: array[1],

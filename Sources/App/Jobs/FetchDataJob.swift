@@ -5,6 +5,7 @@
 import Vapor
 import Fluent
 import Queues
+import MongoKitten
 
 struct FetchDataJob: AsyncScheduledJob {
     let logger = Logger(label: "FetchDataJob")
@@ -30,13 +31,16 @@ struct FetchDataJob: AsyncScheduledJob {
             let handler = try CsvHandler(csvBody: body)
             logger.log(level: .info, "CSV loaded")
 
-            try await storeOnDatabase(events: handler.eventsFromCSV(), database: context.application.db(.mongo))
+            try storeOnDatabase(events: handler.eventsFromCSV(), database: context.application.mongoDB)
         } catch {
             logger.log(level: .error, "\(error.localizedDescription)")
         }
     }
 
-    private func storeOnDatabase(events: [ProCivEvent], database: Database) async throws {
-        try await events.create(on: database)
+    private func storeOnDatabase(events: [ProCivEvent], database: MongoDatabase) throws {
+        let collection = database["prociv_events"]
+        let response = try collection.insertManyEncoded(events).wait()
+
+        logger.log(level: .debug, "\(response.debugDescription)")
     }
 }

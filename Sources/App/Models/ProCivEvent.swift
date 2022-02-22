@@ -3,76 +3,31 @@
 //
 
 import Vapor
-import Fluent
 
-final class ProCivEvent: Model, Content {
-    static let schema = "prociv_events"
+// MARK: - ProCivEvent
+struct ProCivEvent: Codable {
+    let numero, dataOcorrencia, natureza, estadoOcorrencia: String
+    let distrito, concelho, freguesia, localidade: String
+    let latitude, longitude: Double
+    let numeroMeiosTerrestresEnvolvidos, numeroOperacionaisTerrestresEnvolvidos: Int
+    let numeroMeiosAereosEnvolvidos, numeroOperacionaisAereosEnvolvidos: Int
+    let updateDate: Date = Date()
 
-    @ID(key: .id)
-    var id: UUID?
-
-    @Field(key: "numero")
-    var numero: String
-
-    @Field(key: "dataOcorrencia")
-    var dataOcorrencia: String
-
-    @Field(key: "natureza")
-    var natureza: String
-
-    @Field(key: "estadoOcorrencia")
-    var estadoOcorrencia: String
-
-    @Field(key: "distrito")
-    var distrito: String
-
-    @Field(key: "concelho")
-    var concelho: String
-
-    @Field(key: "freguesia")
-    var freguesia: String
-
-    @Field(key: "localidade")
-    var localidade: String
-
-    @Field(key: "latitude")
-    var latitude : Double
-
-    @Field(key: "longitude")
-    var longitude : Double
-
-    @Field(key: "numeroMeiosTerrestresEnvolvidos")
-    var numeroMeiosTerrestresEnvolvidos: Int
-
-    @Field(key: "numeroOperacionaisTerrestresEnvolvidos")
-    var numeroOperacionaisTerrestresEnvolvidos: Int
-
-    @Field(key: "numeroMeiosAereosEnvolvidos")
-    var numeroMeiosAereosEnvolvidos : Int
-
-    @Field(key: "numeroOperacionaisAereosEnvolvidos")
-    var numeroOperacionaisAereosEnvolvidos: Int
-
-    @Timestamp(key: "updatedDate", on: .update)
-    var updatedDate: Date?
-
-    init() { }
-
-    init(id: UUID? = nil, numero: String, dataOcorrencia: String, natureza: String, estadoOcorrencia: String, distrito: String, concelho: String, freguesia: String, localidade: String, latitude: Double, longitude: Double, numeroMeiosTerrestresEnvolvidos: Int, numeroOperacionaisTerrestresEnvolvidos: Int, numeroMeiosAereosEnvolvidos: Int, numeroOperacionaisAereosEnvolvidos: Int) {
-        self.id = id
-        self.numero = numero
-        self.dataOcorrencia = dataOcorrencia
-        self.natureza = natureza
-        self.estadoOcorrencia = estadoOcorrencia
-        self.distrito = distrito
-        self.concelho = concelho
-        self.freguesia = freguesia
-        self.localidade = localidade
-        self.latitude = latitude
-        self.longitude = longitude
-        self.numeroMeiosTerrestresEnvolvidos = numeroMeiosTerrestresEnvolvidos
-        self.numeroOperacionaisTerrestresEnvolvidos = numeroOperacionaisTerrestresEnvolvidos
-        self.numeroMeiosAereosEnvolvidos = numeroMeiosAereosEnvolvidos
-        self.numeroOperacionaisAereosEnvolvidos = numeroOperacionaisAereosEnvolvidos
+    enum CodingKeys: String, CodingKey {
+        case numero = "Numero"
+        case dataOcorrencia = "DataOcorrencia"
+        case natureza = "Natureza"
+        case estadoOcorrencia = "EstadoOcorrencia"
+        case distrito = "Distrito"
+        case concelho = "Concelho"
+        case freguesia = "Freguesia"
+        case localidade = "Localidade"
+        case latitude = "Latitude"
+        case longitude = "Longitude"
+        case numeroMeiosTerrestresEnvolvidos = "NumeroMeiosTerrestresEnvolvidos"
+        case numeroOperacionaisTerrestresEnvolvidos = "NumeroOperacionaisTerrestresEnvolvidos"
+        case numeroMeiosAereosEnvolvidos = "NumeroMeiosAereosEnvolvidos"
+        case numeroOperacionaisAereosEnvolvidos = "NumeroOperacionaisAereosEnvolvidos"
+        case updateDate = "updateDate"
     }
 }

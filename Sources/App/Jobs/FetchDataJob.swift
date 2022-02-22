@@ -32,8 +32,10 @@ struct FetchDataJob: AsyncScheduledJob {
             logger.log(level: .info, "CSV loaded")
 
             try storeOnDatabase(events: handler.eventsFromCSV(), database: context.application.mongoDB)
+            logger.log(level: .notice, "Inserted new events")
         } catch {
             logger.log(level: .error, "\(error.localizedDescription)")
+            logger.report(error: error)
         }
     }
 

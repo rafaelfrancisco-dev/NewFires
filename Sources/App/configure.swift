@@ -1,5 +1,3 @@
-import Fluent
-import FluentMongoDriver
 import QueuesMongoDriver
 import MongoKitten
 import Leaf

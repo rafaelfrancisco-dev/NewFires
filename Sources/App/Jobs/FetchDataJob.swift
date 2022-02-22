@@ -3,7 +3,6 @@
 //
 
 import Vapor
-import Fluent
 import Queues
 import MongoKitten
 

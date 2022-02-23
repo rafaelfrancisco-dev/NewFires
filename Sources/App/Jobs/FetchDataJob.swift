@@ -39,9 +39,12 @@ struct FetchDataJob: AsyncScheduledJob {
     }
 
     private func storeOnDatabase(events: [ProCivEvent], database: MongoDatabase) throws {
-        let collection = database["prociv_events"]
-        let response = try collection.insertManyEncoded(events).wait()
-
+        let response = try database.allEvents.insertManyEncoded(events).wait()
         logger.log(level: .debug, "\(response.debugDescription)")
+
+        let _ = database.latest.drop()
+        let latestResponse = try database.latest.insertManyEncoded(events).wait()
+
+        logger.log(level: .debug, "\(latestResponse.debugDescription)")
     }
 }

@@ -27,10 +27,15 @@ extension Application {
     }
 
     public func initializeMongoDB(connectionString: String) throws {
+        let logger = Logger(label: "MongoDB")
+
+        logger.log(level: .debug, "Connecting to MongoDB at: \(connectionString)")
         try mongoDB = MongoDatabase.lazyConnect(connectionString, on: eventLoopGroup)
 
         // Setup Indexes for the Job Schema for performance (Optional)
         try queues.setupMongo(using: mongoDB)
         queues.use(.mongodb(mongoDB))
+
+        logger.log(level: .notice, "MongoDB setup complete")
     }
 }

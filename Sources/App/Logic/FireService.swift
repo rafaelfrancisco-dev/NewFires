@@ -15,9 +15,10 @@ class FireService {
     func getAllFires() async throws -> [ProCivEvent] {
         try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<[ProCivEvent], Error>) in
             let results = database
-                    .singleEventAggregate()
-                    .decode(ProCivEvent.self)
-                    .allResults()
+                .latest
+                .find(["$text" : [ "$search" : "Incêndio"]])
+                .decode(ProCivEvent.self)
+                .allResults()
 
             do {
                 continuation.resume(returning: try results.wait())

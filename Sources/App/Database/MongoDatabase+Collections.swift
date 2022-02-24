@@ -17,12 +17,4 @@ extension MongoDatabase {
             self["latest"]
         }
     }
-
-    func singleEventAggregate() -> AggregateBuilderPipeline {
-        allEvents.buildAggregate {
-            group(["_id": "$Numero"])
-            lookup(from: "prociv_events", localField: "_id", foreignField: "Numero", as: "documents")
-            sort(["updateDate": SortOrder.descending])
-        }
-    }
 }

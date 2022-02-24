@@ -31,11 +31,24 @@ extension Application {
 
         logger.log(level: .debug, "Connecting to MongoDB at: \(connectionString)")
         try mongoDB = MongoDatabase.lazyConnect(connectionString, on: eventLoopGroup)
-
-        // Setup Indexes for the Job Schema for performance (Optional)
+        
+        try setIndexes(mongoDB: mongoDB)
         try queues.setupMongo(using: mongoDB)
+        
         queues.use(.mongodb(mongoDB))
-
         logger.log(level: .notice, "MongoDB setup complete")
+    }
+    
+    private func setIndexes(mongoDB: MongoDatabase) throws {
+        let logger = Logger(label: "MongoDBIndexes")
+        logger.log(level: .info, "Setting up collection indexes")
+        
+        let _ = try mongoDB.latest.createIndex(named: "numero_index", keys: ["Numero" : 1]).wait()
+        let _ = try mongoDB.latest.createIndex(named: "natureza_index", keys: ["Natureza" : "text"]).wait()
+        
+        let _ = try mongoDB.allEvents.createIndex(named: "numero_index", keys: ["Numero" : 1]).wait()
+        let _ = try mongoDB.allEvents.createIndex(named: "natureza_index", keys: ["Natureza" : "text"]).wait()
+        
+        logger.log(level: .info, "Finished setting up collection indexes")
     }
 }

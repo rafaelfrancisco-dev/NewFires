@@ -42,7 +42,7 @@ struct FetchDataJob: AsyncScheduledJob {
         let response = try database.allEvents.insertManyEncoded(events).wait()
         logger.log(level: .debug, "\(response.debugDescription)")
 
-        let _ = database.latest.drop()
+        let _ = try database.latest.deleteAll(where: [:]).wait()
         let latestResponse = try database.latest.insertManyEncoded(events).wait()
 
         logger.log(level: .debug, "\(latestResponse.debugDescription)")

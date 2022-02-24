@@ -5,7 +5,7 @@
 import Vapor
 
 // MARK: - ProCivEvent
-struct ProCivEvent: Codable {
+struct ProCivEvent: Codable, Content {
     let numero, dataOcorrencia, natureza, estadoOcorrencia: String
     let distrito, concelho, freguesia, localidade: String
     let latitude, longitude: Double

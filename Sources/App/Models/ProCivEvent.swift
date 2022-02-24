@@ -11,7 +11,7 @@ struct ProCivEvent: Codable, Content {
     let latitude, longitude: Double
     let numeroMeiosTerrestresEnvolvidos, numeroOperacionaisTerrestresEnvolvidos: Int
     let numeroMeiosAereosEnvolvidos, numeroOperacionaisAereosEnvolvidos: Int
-    let updateDate: Date = Date()
+    let updateDate: Date
 
     enum CodingKeys: String, CodingKey {
         case numero = "Numero"

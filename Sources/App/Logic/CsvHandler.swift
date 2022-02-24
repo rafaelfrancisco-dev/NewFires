@@ -30,7 +30,8 @@ class CsvHandler {
                     numeroMeiosTerrestresEnvolvidos: Int(array[10]) ?? 0,
                     numeroOperacionaisTerrestresEnvolvidos: Int(array[11]) ?? 0,
                     numeroMeiosAereosEnvolvidos: Int(array[12]) ?? 0,
-                    numeroOperacionaisAereosEnvolvidos: Int(array[13]) ?? 0
+                    numeroOperacionaisAereosEnvolvidos: Int(array[13]) ?? 0,
+                    updateDate: Date()
             ))
         }
 

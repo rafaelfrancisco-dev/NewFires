@@ -12,7 +12,7 @@ import Vapor
 struct StatusProCivEventElement: Codable, Content  {
     let id: Int
     let numero, estadoOcorrencia: String
-    let data: Int
+    let data: Double
 
     enum CodingKeys: String, CodingKey {
         case id

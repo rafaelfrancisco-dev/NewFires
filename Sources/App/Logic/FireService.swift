@@ -75,7 +75,34 @@ class FireService {
         })
     }
 
-    /*func getLatestStatusForFireId() -> ProCivEvent {
-
-    }*/
+    func getStatusForEvent(number: String) async throws -> StatusProCivEvent {
+        try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<StatusProCivEvent, Error>) in
+            do {
+                var results = StatusProCivEvent()
+                
+                try database
+                    .allEvents
+                    .find("Numero" == number)
+                    .sort(["updateDate" : SortOrder.ascending])
+                    .decode(ProCivEvent.self)
+                    .forEach(handler: { event in
+                        if !results.contains(where: { $0.estadoOcorrencia == event.estadoOcorrencia }) {
+                            results.append(
+                                StatusProCivEventElement(
+                                    id: UUID().hashValue,
+                                    numero: event.numero,
+                                    estadoOcorrencia: event.estadoOcorrencia,
+                                    data: event.updateDate.timeIntervalSince1970
+                                )
+                            )
+                        }
+                    })
+                    .wait()
+                
+                continuation.resume(returning: results)
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        })
+    }
 }

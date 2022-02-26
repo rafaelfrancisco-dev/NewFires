@@ -28,4 +28,20 @@ func routes(_ app: Application) throws {
             throw Abort(.noContent)
         }
     }
+    
+    app.get("status") { req async throws -> StatusProCivEvent in
+        let service = FireService(database: app.mongoDB)
+        
+        guard let number = req.query[Int.self, at: "number"] else {
+            throw Abort(.badRequest)
+        }
+        
+        let numero = try await service.eventExists(number: number)
+        
+        if let numero = numero {
+            return try await service.getStatusForEvent(number: numero)
+        } else {
+            throw Abort(.noContent)
+        }
+    }
 }

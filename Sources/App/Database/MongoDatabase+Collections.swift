@@ -17,4 +17,10 @@ extension MongoDatabase {
             self["latest"]
         }
     }
+    
+    var notifications: MongoCollection {
+        get {
+            self["notifications"]
+        }
+    }
 }

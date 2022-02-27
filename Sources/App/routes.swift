@@ -1,4 +1,5 @@
 import Vapor
+import MongoKittenCore
 
 func routes(_ app: Application) throws {
     app.get { req in
@@ -9,7 +10,7 @@ func routes(_ app: Application) throws {
         "Hello, world!"
     }
 
-    app.get("fires", "all") { req async throws -> [ProCivEvent] in
+    app.get("all") { req async throws -> [ProCivEvent] in
         try await FireService(database: app.mongoDB).getAllFires()
     }
     
@@ -42,6 +43,26 @@ func routes(_ app: Application) throws {
             return try await service.getStatusForEvent(number: numero)
         } else {
             throw Abort(.noContent)
+        }
+    }
+    
+    app.get("register") { req async throws -> String in
+        let service = NotificationsService(database: app.mongoDB)
+        
+        guard let fire = req.query[String.self, at: "fire"] else {
+            throw Abort(.badRequest)
+        }
+        
+        guard let token = req.query[String.self, at: "token"] else {
+            throw Abort(.badRequest)
+        }
+        
+        let response = try await service.registerForFire(token: token, fire: fire)
+        
+        if let response = response {
+            return response.localizedDescription
+        } else {
+            return "false"
         }
     }
 }

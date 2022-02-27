@@ -8,14 +8,18 @@ public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     try app.initializeMongoDB(connectionString: Environment.get("DATABASE_URL") ?? "mongodb://localhost:27017/vapor_database")
-
+    
     app.queues.schedule(FetchDataJob())
-            .minutely()
-            .at(0)
-
+        .minutely()
+        .at(0)
+    
+    app.queues.schedule(NotificationsJob())
+        .minutely()
+        .at(30)
+    
     try app.queues.startScheduledJobs()
     app.views.use(.leaf)
-
+    
     // register routes
     try routes(app)
 }

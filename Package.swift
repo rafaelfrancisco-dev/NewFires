@@ -12,6 +12,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor-community/queues-mongo-driver.git", from: "1.0.0"),
         .package(url: "https://github.com/swiftcsv/SwiftCSV.git", from: "0.6.1"),
+        .package(url: "https://github.com/barrault01/FirebaseHelpers.git", from: "1.1.1")
     ],
     targets: [
         .target(
@@ -20,7 +21,8 @@ let package = Package(
                 .product(name: "QueuesMongoDriver", package: "queues-mongo-driver"),
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "Vapor", package: "vapor"),
-                .product(name: "SwiftCSV", package: "SwiftCSV")
+                .product(name: "SwiftCSV", package: "SwiftCSV"),
+                .product(name: "FirebaseHelpers", package: "FirebaseHelpers")
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of

@@ -59,10 +59,32 @@ func routes(_ app: Application) throws {
         
         let response = try await service.registerForFire(token: token, fire: fire)
         
-        if let response = response {
-            return response.localizedDescription
-        } else {
-            return "false"
+        return response.description
+    }
+    
+    app.get("unregister") { req async throws -> String in
+        let service = NotificationsService(database: app.mongoDB)
+        
+        guard let fire = req.query[String.self, at: "fire"] else {
+            throw Abort(.badRequest)
         }
+        
+        guard let token = req.query[String.self, at: "token"] else {
+            throw Abort(.badRequest)
+        }
+        
+        let response = try await service.deregisterForFire(token: token, fire: fire)
+        
+        return response.description
+    }
+    
+    app.get("followedfires") { req async throws -> [String] in
+        let service = NotificationsService(database: app.mongoDB)
+        
+        guard let token = req.query[String.self, at: "token"] else {
+            throw Abort(.badRequest)
+        }
+        
+        return try await service.getAllFollowedFires(token: token)
     }
 }

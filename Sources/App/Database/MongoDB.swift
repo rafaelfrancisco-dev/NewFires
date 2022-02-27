@@ -49,6 +49,8 @@ extension Application {
         let _ = try mongoDB.allEvents.createIndex(named: "numero_index", keys: ["Numero" : 1]).wait()
         let _ = try mongoDB.allEvents.createIndex(named: "natureza_index", keys: ["Natureza" : "text"]).wait()
         
+        let _ = try mongoDB.notifications.createIndex(named: "token_index", keys: ["token" : 1]).wait()
+        
         logger.log(level: .info, "Finished setting up collection indexes")
     }
 }
